@@ -19,7 +19,7 @@ class Settings():
     DATABASE_TYPE='sqlite' # Literal['mysql', 'postgresql','sqlite']
 
     # database
-    DATABASE_PATH = os.path.join(BasePath,'data','lite.db')  # sqlite 数据库路径
+    DATABASE_PATH = os.path.join(BasePath,'hellodata','hello.db')  # sqlite 数据库路径
     DATABASE_ECHO: bool = True
     DATABASE_POOL_ECHO: bool = False
 
