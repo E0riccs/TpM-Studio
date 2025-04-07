@@ -4,7 +4,6 @@ from app.HelloWorld.schemas.hello import CreateHelloParam,UpdateHelloParam
 
 from app.HelloWorld.cruds.hello_cruds import hello_dao
 
-from backend.app.HelloWorld.models import hello
 from backend.common.exception import errors
 
 from database.db import async_db_session

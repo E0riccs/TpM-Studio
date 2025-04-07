@@ -4,7 +4,7 @@
 
 from fastapi import APIRouter
 
-from backend.app.HelloWorld.api.router import v1 as hello_router
+from backend.app.HelloWorld.api.v1.helloworld import router as hello_router
 
 v1 = APIRouter()
 

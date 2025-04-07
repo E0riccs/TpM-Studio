@@ -19,7 +19,11 @@ class HelloCRUD():
 
     # 创建一个 Hello
     async def create_hello(self, db, param: CreateHelloParam) -> None:
-        new_hello = Hello(**param.model_dump())
+        # new_hello = Hello(**param.model_dump())
+        new_hello = Hello(
+            a_number=param.a_number,
+            a_string = param.a_string
+        )
 
         db.add(new_hello)
         await db.commit()

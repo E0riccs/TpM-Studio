@@ -180,3 +180,4 @@ __pycache__/
 .vscode/settings.json
 .gitignore
 backend/hellodata/hello.db
+.vscode/launch.json

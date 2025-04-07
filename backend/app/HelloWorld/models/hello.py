@@ -11,7 +11,8 @@ class Hello(Base):
     # 主键，一个id_key类型的 Mapped 映射列
     # Mapped 在新版本的 sqlalchemy 中被推荐使用，而非传统的 Column
     # init=False 表示不初始化, 多用于主键
-    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    # 类型： id_key
+    id: Mapped[id_key] = mapped_column(init=False,primary_key=True)
 
     # 产生的随机数字
     a_number: Mapped[int] = mapped_column(nullable=False)
