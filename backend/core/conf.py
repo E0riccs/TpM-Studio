@@ -51,6 +51,9 @@ class Settings():
     # Trace ID
     TRACE_ID_REQUEST_HEADER_KEY: str = 'X-Request-ID'
 
+    # DataFile
+    DATA_FILE_SAVE_METHOD:str = 'minio'
+
 # class Settings(BaseSettings):
 #     """Global Settings"""
 
