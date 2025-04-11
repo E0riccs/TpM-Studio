@@ -8,7 +8,7 @@ class MinioSettings:
     MINIO_ENDPOINT: str = 'localhost:9000'
     MINIO_ACCESS_KEY: str = 'minioadmin'
     MINIO_SECRET_KEY: str = 'minioadmin'
-    MINIO_SECURE: bool = False  # 是否使用HTTPS
+    MINIO_SECURE: bool = False  # 本地使用，禁用HTTPS
     
     # 存储桶配置
     MINIO_BUCKET_NAME: str = 'tpm-studio'
@@ -16,4 +16,4 @@ class MinioSettings:
     
     # 文件配置
     MINIO_MAX_FILE_SIZE: int = 1024 * 1024 * 800  # 最大文件大小(800MB)
-    MINIO_ALLOWED_EXTENSIONS: list[str] = ['xls', 'xlsx','csv']
+    MINIO_ALLOWED_EXTENSIONS: list[str] = ['xls', 'xlsx','csv','txt']

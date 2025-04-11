@@ -73,50 +73,50 @@ async def upload_file(
         log.error(f'文件上传失败: {str(e)}')
         raise HTTPException(status_code=500, detail='文件上传失败')
 
-@router.get('/info/{file_id}')
-async def get_file_info(
-    file_id: int,
-    generate_url: bool = False,
-    url_expires: int = 3600,
-    db: CurrentSession = Depends()
-):
-    """获取文件信息
+# @router.get('/info/{file_id}')
+# async def get_file_info(
+#     file_id: int,
+#     generate_url: bool = False,
+#     url_expires: int = 3600,
+#     db: CurrentSession = Depends()
+# ):
+#     """获取文件信息
     
-    Args:
-        file_id: 文件ID
-        generate_url: 是否生成访问URL
-        url_expires: URL过期时间(秒)
-        db: 数据库会话
-    """
-    try:
-        crud = DataFileCRUD(db)
-        file_record, url = await crud.get_file(
-            file_id=file_id,
-            generate_url=generate_url,
-            url_expires=url_expires
-        )
+#     Args:
+#         file_id: 文件ID
+#         generate_url: 是否生成访问URL
+#         url_expires: URL过期时间(秒)
+#         db: 数据库会话
+#     """
+#     try:
+#         crud = DataFileCRUD(db)
+#         file_record, url = await crud.get_file(
+#             file_id=file_id,
+#             generate_url=generate_url,
+#             url_expires=url_expires
+#         )
         
-        if not file_record:
-            raise HTTPException(status_code=404, detail='文件不存在')
+#         if not file_record:
+#             raise HTTPException(status_code=404, detail='文件不存在')
         
-        return {
-            'code': 200,
-            'message': '获取文件信息成功',
-            'data': {
-                'file_id': file_record.id,
-                'filename': file_record.filename,
-                'file_type': file_record.file_type,
-                'file_size': file_record.file_size,
-                'access_type': file_record.access_type,
-                'created_time': file_record.created_time,
-                'download_url': url
-            }
-        }
-    except HTTPException as e:
-        raise e
-    except Exception as e:
-        log.error(f'获取文件信息失败: {str(e)}')
-        raise HTTPException(status_code=500, detail='获取文件信息失败')
+#         return {
+#             'code': 200,
+#             'message': '获取文件信息成功',
+#             'data': {
+#                 'file_id': file_record.id,
+#                 'filename': file_record.filename,
+#                 'file_type': file_record.file_type,
+#                 'file_size': file_record.file_size,
+#                 'access_type': file_record.access_type,
+#                 'created_time': file_record.created_time,
+#                 'download_url': url
+#             }
+#         }
+#     except HTTPException as e:
+#         raise e
+#     except Exception as e:
+#         log.error(f'获取文件信息失败: {str(e)}')
+#         raise HTTPException(status_code=500, detail='获取文件信息失败')
 
 @router.get('/download/{file_id}')
 async def download_file(file_id: int, db: CurrentSession = Depends()):
