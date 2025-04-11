@@ -124,4 +124,4 @@ class MinioClient:
             raise
 
 # 创建全局MinIO客户端实例
-minio_client = MinioClient()
+minio_client:MinioClient = MinioClient()
