@@ -2,76 +2,56 @@
 from datetime import datetime
 from typing import Optional
 
+from backend.common.response.response_schema import response_base,ResponseSchemaModel,ResponseModel
+
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from fastapi.responses import StreamingResponse
 
-from backend.app.DataFile.crud import DataFileCRUD
 from backend.core.minio_conf import MinioSettings
 from backend.database.db import CurrentSession
 from backend.common.log import log
 
+from backend.app.DataFile.services.Datafile_service import dataFileService
+
+from backend.app.DataFile.schemas.MinioOperation import UploadOperaionDetail
+
 router = APIRouter(prefix='/api/v1/files', tags=['文件管理'])
 
+'''
+note
+
+解耦不完全，正在完成从这到service的转移
+'''
+
+
+@router.get("/health")
+async def health_check() -> ResponseModel:
+    if dataFileService.is_health():    
+        return response_base.success()
+    else:
+        return response_base.error(msg="Storage unavailable")
+    
+    
 @router.post('/upload')
 async def upload_file(
     file: UploadFile = File(...),
-    access_type: str = Form('private'),
-    expiration_time: Optional[datetime] = Form(None),
-    db: CurrentSession = Depends()
-):
+    # access_type: str = Form('private'),
+    # expiration_time: Optional[datetime] = Form(None),
+    # db: CurrentSession = Depends()
+) -> ResponseSchemaModel[UploadOperaionDetail]:
     """上传文件
     
     Args:
         file: 文件对象
-        access_type: 访问类型 (private/public-read)
-        expiration_time: 过期时间
-        db: 数据库会话
+        # access_type: 访问类型 (private/public-read)
+        # expiration_time: 过期时间
+        # db: 数据库会话
     """
-    try:
-        # 验证文件大小
-        file_size = 0
-        chunk_size = 8192  # 8KB chunks
+
+    status = dataFileService.upload_file(file)
         
-        while chunk := await file.read(chunk_size):
-            file_size += len(chunk)
-            if file_size > MinioSettings.MINIO_MAX_FILE_SIZE:
-                raise HTTPException(status_code=413, detail='文件大小超过限制')
-        
-        # 重置文件指针
-        await file.seek(0)
-        
-        # 验证文件类型
-        file_ext = file.filename.split('.')[-1].lower()
-        if file_ext not in MinioSettings.MINIO_ALLOWED_EXTENSIONS:
-            raise HTTPException(status_code=400, detail='不支持的文件类型')
-        
-        # 创建文件记录
-        crud = DataFileCRUD(db)
-        file_record = await crud.create_file(
-            file_obj=file.file,
-            filename=file.filename,
-            file_type=file.content_type,
-            file_size=file_size,
-            created_by=1,  # TODO: 从认证中获取用户ID
-            access_type=access_type,
-            expiration_time=expiration_time
-        )
-        
-        return {
-            'code': 200,
-            'message': '文件上传成功',
-            'data': {
-                'file_id': file_record.id,
-                'filename': file_record.filename,
-                'file_size': file_record.file_size,
-                'storage_path': file_record.storage_path
-            }
-        }
-    except HTTPException as e:
-        raise e
-    except Exception as e:
-        log.error(f'文件上传失败: {str(e)}')
-        raise HTTPException(status_code=500, detail='文件上传失败')
+    return 
+
 
 # @router.get('/info/{file_id}')
 # async def get_file_info(
