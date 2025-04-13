@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from datetime import timedelta
+from datetime import timedelta, datetime
 from typing import BinaryIO, Optional
 
 from minio import Minio
@@ -18,6 +18,9 @@ class MinioClient:
             secret_key=MinioSettings.MINIO_SECRET_KEY,
             secure=MinioSettings.MINIO_SECURE
         )
+        self.max_file_size = MinioSettings.MINIO_MAX_FILE_SIZE
+        self.allowed_file_extension = MinioSettings.MINIO_ALLOWED_EXTENSIONS
+
         self._ensure_bucket_exists()
     
     def _ensure_bucket_exists(self) -> None:
@@ -57,7 +60,8 @@ class MinioClient:
             return {
                 'bucket_name': result.bucket_name,
                 'object_name': result.object_name,
-                'version_id': result.version_id
+                'version_id': result.version_id,
+                'upload_time': datetime.now()
             }
         except S3Error as e:
             log.error(f'文件上传失败: {str(e)}')
@@ -122,3 +126,6 @@ class MinioClient:
         except S3Error as e:
             log.error(f'获取文件URL失败: {str(e)}')
             raise
+
+
+minio_client:MinioClient = MinioClient()

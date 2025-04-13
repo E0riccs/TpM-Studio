@@ -86,8 +86,7 @@ def register_router(app: FastAPI):
 # 文件储存注册器（对象 S3）
 def register_file(app: FastAPI):
     if settings.DATA_FILE_SAVE_METHOD == 'minio':
-        from backend.app.DataFile.utils.minio_client import MinioClient
-        app.state.minio_client = MinioClient()
+        pass
     else:
         raise ValueError(f'Invalid DATA_FILE_SAVE_METHOD: {settings.DATA_FILE_SAVE_METHOD}')
     
