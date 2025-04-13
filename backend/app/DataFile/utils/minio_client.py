@@ -122,6 +122,3 @@ class MinioClient:
         except S3Error as e:
             log.error(f'获取文件URL失败: {str(e)}')
             raise
-
-# 创建全局MinIO客户端实例
-minio_client:MinioClient = MinioClient()
