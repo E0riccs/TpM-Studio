@@ -19,6 +19,9 @@ async def hello_name(name: str) -> ResponseModel:
 
 @router.get("/hello/{id}", summary="Complicate Hello World")
 async def hello_num(id: int = 1) -> ResponseSchemaModel[GetHelloDetail]:
+    '''
+    隐式类型转换: FastAPI 通过 Pydantic 的 model_dump() 方法, 将数据模型 (转换为 dict) 转化为 schema 模型
+    '''
     hello = await hello_service.get_hello(id)
     return response_base.success(data=hello)
 

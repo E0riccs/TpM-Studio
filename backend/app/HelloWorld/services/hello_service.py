@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from app.HelloWorld.models.hello import Hello
-from app.HelloWorld.schemas.hello import CreateHelloParam,UpdateHelloParam
+from app.HelloWorld.schemas.hello import CreateHelloParam, UpdateHelloParam
 
 from app.HelloWorld.cruds.hello_cruds import hello_dao
 
